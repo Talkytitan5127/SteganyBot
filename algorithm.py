@@ -179,4 +179,3 @@ if __name__ == '__main__':
         obj.SetModule("photos/decrypt/photo3.png")
         text = obj.Decrypt()
         print(text)
-
