@@ -196,4 +196,3 @@ if __name__ == '__main__':
     token = "TOKEN"
     bot = SteganyBot(token)
     bot.StartBot()
-
