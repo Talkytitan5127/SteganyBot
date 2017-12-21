@@ -1,8 +1,16 @@
 language: python
 python:
-  - "3.5"
+- '3.5'
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
-  - pycodestyle --show-source --show-pep8 main.py
-  - pycodestyle --show-source --show-pep8 algorithm.py
+- pycodestyle --show-source --show-pep8 *.py
+- python3 tests.py
+deploy:
+  provider: heroku
+  api_key:
+    secure: WzCTLgt0KWNIyAhPb74rbo+hvJAYKoH86GHzi825gbnOdlptqCKdQ9m/GZYUx5VkyehZ4SFEigmLdLAVfxeOZRjEhkFTH1ZGI1OBwr2zR982u5jQlgvz2RSozDTaGEn8HeUYq+Xgahe0Ue8SYyNiwO/lWvf0PUxkay4PDjq6E573Ki0Itda8w9VuMTs1Kb7Gf69LAURTMk9MX6srhIp1KXEUgP6FjoTP8PGKH+4FCIKx5k4AU5glgCT1XcONtp4IOiAYGpLZZXe0SnGOI6X1reu4CdpaR6o24ywflDRQcqiPClLq7t/3KMeskluzjNP+fix/5955ENBRyqJln4jpVQ8O73wyHBEipmegaFwOcPr6vV/w/EUsePEYB14FEwvk+6PlbpbFPz4WltmLTzK400FydWpd7ZqyTYHICu5ocnNHJyyvkjff1sCZMyBe6i/7q5RBvNb+RlIclnaPPwLhN7dy29hk9fxTOR0PMIyBzjokbzyeGiZL7TDsbSDa6E5NB0OHKudnjZcxv96OyAU7niIGZ6Ayq6Qmapbm5rKfRfqbmsE/SQUf3kstZojZqfvzF6C2jyZKDjCFkpzyAEtjDj29SYHJrV5eJtNU6DK3jTueaw8bjqng5eMnrUC2qGFfTFGbYqxcBDXxps9apwRAukI5gi6dEiX82Xy38d3govk=
+  app: steganybot
+  run:
+    - ps:scale worker=1
+    - restart

@@ -7,18 +7,17 @@ from urllib import parse
 import psycopg2
 
 parse.uses_netloc.append("postgres")
-url = parse.urlparse(os.environ["DATABASE_URL"])
 
 
 class DataBase:
     """Реализует интерфейс работы с базой данных
-    
+
     Note:
         У пользователя прямого доступа к классу нет
-    
+
     Attributes:
-        conn (:class: `connection`): Дескриптор подключения к базе данных
-        cur (:class: `cursor`): Перо для выполнения PostgreSQL команд.
+        conn (:class:`connection`): Дескриптор подключения к базе данных
+        cur (:class:`cursor`): Перо для выполнения PostgreSQL команд.
     Args:
         conn (:class: `connection`): Дескриптор подключения к базе данных.
             Создается подключение между программой и базой данных, созданная
@@ -28,12 +27,13 @@ class DataBase:
 
     """
     def __init__(self):
+        self.url = parse.urlparse(os.environ["DATABASE_URL"])
         self.conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
+            database=self.url.path[1:],
+            user=self.url.username,
+            password=self.url.password,
+            host=self.url.hostname,
+            port=self.url.port
         )
         self.cur = self.conn.cursor()
 
@@ -81,7 +81,7 @@ class DataBase:
             (user[0], user[1], user[2], user[3])
         )
         self.conn.commit()
-        if len(user[0]) == 0:
+        if user[0] is None:
                 return "notice user"
         return "successful addUser"
 
@@ -154,13 +154,12 @@ class DataBase:
         self.cur.execute("""SELECT chat_id FROM users
             WHERE username=\'{}\'""".format(user))
         res = self.cur.fetchall()
-        print(res)
         id = int(res[0][0])
         return id
 
     def AskUserName(self, username):
         """Проверка наличия пользователя с переданным username'ом
-        
+
         Args:
             username (str): Username пользователя
 
